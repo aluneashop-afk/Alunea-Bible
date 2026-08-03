@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alkitab-alunea.web.app/sitemap.xml
