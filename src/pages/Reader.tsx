@@ -226,30 +226,36 @@ export const Reader: React.FC = () => {
                   const targetClass = isTarget ? 'ring-2 ring-[#CD0000] bg-[#CD0000]/10 shadow-sm' : '';
 
                   return (
-                    <div
-                      key={v.verse}
-                      id={`verse-${v.verse}`}
-                      onClick={() => handleVerseClick(v.verse, v.text)}
-                      className={`group relative p-3.5 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-[var(--bg-card-secondary)] flex items-start gap-3.5 ${highlightClass} ${targetClass}`}
-                    >
-                      {/* Verse Number */}
-                      <span className="select-none text-xs font-extrabold text-[#CD0000] mt-1 min-w-[20px] text-right">
-                        {v.verse}
-                      </span>
-
-                      {/* Verse Text */}
-                      <p className="flex-1 text-[var(--text-primary)] font-normal">
-                        {v.text}
-                      </p>
-
-                      {/* Bookmark Indicator */}
-                      {isBm && (
-                        <Bookmark
-                          size={16}
-                          className="text-[#CD0000] fill-[#CD0000]/20 shrink-0 mt-1.5"
-                        />
+                    <React.Fragment key={v.verse}>
+                      {v.title && (
+                        <h3 className="text-sm font-extrabold text-[var(--text-primary)] pt-5 pb-2 px-3.5 tracking-tight border-b border-[var(--border-color)]/40 mb-2">
+                          {v.title}
+                        </h3>
                       )}
-                    </div>
+                      <div
+                        id={`verse-${v.verse}`}
+                        onClick={() => handleVerseClick(v.verse, v.text)}
+                        className={`group relative p-3.5 rounded-2xl cursor-pointer transition-all duration-200 hover:bg-[var(--bg-card-secondary)] flex items-start gap-3.5 ${highlightClass} ${targetClass}`}
+                      >
+                        {/* Verse Number */}
+                        <span className="select-none text-xs font-extrabold text-[#CD0000] mt-1 min-w-[20px] text-right">
+                          {v.verse}
+                        </span>
+
+                        {/* Verse Text */}
+                        <p className="flex-1 text-[var(--text-primary)] font-normal">
+                          {v.text}
+                        </p>
+
+                        {/* Bookmark Indicator */}
+                        {isBm && (
+                          <Bookmark
+                            size={16}
+                            className="text-[#CD0000] fill-[#CD0000]/20 shrink-0 mt-1.5"
+                          />
+                        )}
+                      </div>
+                    </React.Fragment>
                   );
                 })
               ) : (
@@ -270,17 +276,23 @@ export const Reader: React.FC = () => {
                     const targetClass = isTarget ? 'bg-[#CD0000]/20 font-semibold ring-1 ring-[#CD0000] rounded-md px-1' : '';
 
                     return (
-                      <span
-                        key={v.verse}
-                        id={`verse-${v.verse}`}
-                        onClick={() => handleVerseClick(v.verse, v.text)}
-                        className={`inline cursor-pointer hover:underline p-0.5 rounded-sm ${highlightClass} ${targetClass}`}
-                      >
-                        <sup className="text-xs font-extrabold text-[#CD0000] mr-1 select-none">
-                          {v.verse}
-                        </sup>
-                        <span>{v.text} </span>
-                      </span>
+                      <React.Fragment key={v.verse}>
+                        {v.title && (
+                          <div className="block w-full font-extrabold text-sm text-[var(--text-primary)] pt-5 pb-2 mb-1 border-b border-[var(--border-color)]/40">
+                            {v.title}
+                          </div>
+                        )}
+                        <span
+                          id={`verse-${v.verse}`}
+                          onClick={() => handleVerseClick(v.verse, v.text)}
+                          className={`inline cursor-pointer hover:underline p-0.5 rounded-sm ${highlightClass} ${targetClass}`}
+                        >
+                          <sup className="text-xs font-extrabold text-[#CD0000] mr-1 select-none">
+                            {v.verse}
+                          </sup>
+                          <span>{v.text} </span>
+                        </span>
+                      </React.Fragment>
                     );
                   })}
                 </div>

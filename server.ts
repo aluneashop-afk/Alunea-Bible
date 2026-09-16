@@ -29,6 +29,36 @@ async function startServer() {
     }
   });
 
+  // API endpoint to proxy Alkitab requests to apiindonesia.id securely
+  const ALKITAB_API_KEY = process.env.APIINDONESIA_KEY || 'aip_live_SWX40QLFVWS9aJAg2c4bR35Cpu21ZYa4';
+
+  app.get('/api/alkitab/*', async (req, res) => {
+    try {
+      const subPath = req.params[0];
+      const queryStr = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+      const targetUrl = `https://use.apiindonesia.id/api/v1/alkitab/${subPath}${queryStr}`;
+
+      const response = await fetch(targetUrl, {
+        headers: {
+          'x-api-key': ALKITAB_API_KEY,
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AluneaBible/1.0',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        return res.status(response.status).json({ error: `API error: ${response.statusText}` });
+      }
+
+      const data = await response.json();
+      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
+      res.json(data);
+    } catch (error: any) {
+      console.error('Error in /api/alkitab proxy:', error);
+      res.status(500).json({ error: 'Gagal mengambil data Alkitab dari API.' });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({

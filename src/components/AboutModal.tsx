@@ -82,25 +82,18 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <BookOpen size={16} className="text-[#CD0000]" />
                   Versi Terjemahan Alkitab
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3.5 rounded-xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1">
-                    <p className="font-extrabold text-[var(--text-primary)]">Terjemahan Baru (TB)</p>
-                    <p className="text-[11px] text-[var(--text-secondary)] leading-snug">
-                      Standar Bahasa Indonesia utama oleh LAI.
+                <div className="p-4 rounded-xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-[#CD0000]/10 text-[#CD0000] font-extrabold text-[11px]">
+                      TB
+                    </span>
+                    <p className="font-extrabold text-[var(--text-primary)] text-xs">
+                      Terjemahan Baru
                     </p>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1">
-                    <p className="font-extrabold text-[var(--text-primary)]">Terjemahan Lama (TL)</p>
-                    <p className="text-[11px] text-[var(--text-secondary)] leading-snug">
-                      Klasik Bahasa Indonesia untuk penjelajahan ayat.
-                    </p>
-                  </div>
-                  <div className="p-3.5 rounded-xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1">
-                    <p className="font-extrabold text-[var(--text-primary)]">King James Version (KJV)</p>
-                    <p className="text-[11px] text-[var(--text-secondary)] leading-snug">
-                      Teks Bahasa Inggris klasik yang dikenal presisi.
-                    </p>
-                  </div>
+                  <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed pt-1">
+                    Menggunakan teks resmi Alkitab Terjemahan Baru (TB) terbitan Lembaga Alkitab Indonesia (LAI), lengkap Perjanjian Lama dan Perjanjian Baru.
+                  </p>
                 </div>
               </div>
 

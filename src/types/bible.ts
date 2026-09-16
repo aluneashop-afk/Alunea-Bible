@@ -23,6 +23,7 @@ export interface Book {
 export interface Verse {
   verse: number;
   text: string;
+  title?: string | null;
 }
 
 export interface Chapter {

@@ -51,45 +51,21 @@ export const AboutPage: React.FC = () => {
       <section className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[28px] p-6 sm:p-7 space-y-5">
         <h2 className="text-xs font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-2">
           <BookOpen size={18} className="text-[#CD0000]" />
-          Versi Terjemahan yang Tersedia
+          Versi Terjemahan Alkitab
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div className="p-4 rounded-2xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1.5">
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#CD0000]/10 text-[#CD0000] font-extrabold text-[10px]">
+        <div className="p-5 rounded-2xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-2">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-block px-3 py-1 rounded-lg bg-[#CD0000]/10 text-[#CD0000] font-extrabold text-xs">
               TB
             </span>
-            <p className="font-extrabold text-[var(--text-primary)] text-sm">
-              Terjemahan Baru
-            </p>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Versi standar Alkitab Bahasa Indonesia utama yang diterbitkan oleh Lembaga Alkitab Indonesia (LAI).
+            <p className="font-extrabold text-[var(--text-primary)] text-sm sm:text-base">
+              Terjemahan Baru (Lembaga Alkitab Indonesia)
             </p>
           </div>
-
-          <div className="p-4 rounded-2xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1.5">
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#CD0000]/10 text-[#CD0000] font-extrabold text-[10px]">
-              TL
-            </span>
-            <p className="font-extrabold text-[var(--text-primary)] text-sm">
-              Terjemahan Lama
-            </p>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Versi klasik Bahasa Indonesia dengan gaya bahasa arkais khas untuk pembanding studi ayat.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] space-y-1.5">
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#CD0000]/10 text-[#CD0000] font-extrabold text-[10px]">
-              KJV
-            </span>
-            <p className="font-extrabold text-[var(--text-primary)] text-sm">
-              King James Version
-            </p>
-            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              Versi Bahasa Inggris klasik yang dikenal presisi, otentik, dan dipercaya secara global.
-            </p>
-          </div>
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed pt-1">
+            Menggunakan teks resmi Alkitab Terjemahan Baru (TB) terbitan Lembaga Alkitab Indonesia (LAI), mencakup seluruh 66 kitab (39 kitab Perjanjian Lama dan 27 kitab Perjanjian Baru).
+          </p>
         </div>
       </section>
 
