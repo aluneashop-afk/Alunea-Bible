@@ -240,7 +240,7 @@ export const Home: React.FC = () => {
           title="Buka kembali cover aplikasi atau ubah profil"
         >
           <User size={13} />
-          <span>{userProfile.name ? 'Ubah Profil' : 'Atur Nama'}</span>
+          <span>{userProfile.name ? 'Ubah Profil' : 'Ubah Nama'}</span>
         </button>
       </div>
 
