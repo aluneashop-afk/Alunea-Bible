@@ -114,3 +114,11 @@ export interface DailyVerse {
   chapter: number;
   verse: number;
 }
+
+export type Gender = 'male' | 'female' | '';
+
+export interface UserProfile {
+  name: string;
+  gender: Gender;
+  hasCompletedOnboarding: boolean;
+}

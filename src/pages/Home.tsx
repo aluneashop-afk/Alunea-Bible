@@ -15,6 +15,7 @@ import {
   Moon,
   Sunrise,
   Sunset,
+  User,
 } from 'lucide-react';
 import { useBible } from '../contexts/BibleContext';
 import { Book, DailyVerse, Testament } from '../types/bible';
@@ -27,26 +28,29 @@ import { motion } from 'motion/react';
 import { FloralBackground } from '../components/FloralBackground';
 import { SEOHead } from '../components/SEOHead';
 
-const getGreetingInfo = () => {
+const getGreetingInfo = (userName?: string, gender?: string) => {
   const now = new Date();
   const hour = now.getHours();
   const minute = now.getMinutes();
   const timeVal = hour + minute / 60;
 
-  let greeting = 'Selamat Pagi';
+  const cleanName = userName?.trim();
+  const titlePrefix = gender === 'female' ? 'Saudari ' : gender === 'male' ? 'Saudara ' : '';
+
+  let greeting = cleanName ? `Selamat Pagi, ${cleanName}` : 'Selamat Pagi';
   let Icon = Sunrise;
 
   if (timeVal >= 4 && timeVal < 11) {
-    greeting = 'Selamat Pagi';
+    greeting = cleanName ? `Selamat Pagi, ${cleanName}` : 'Selamat Pagi';
     Icon = Sunrise;
   } else if (timeVal >= 11 && timeVal < 15) {
-    greeting = 'Selamat Siang';
+    greeting = cleanName ? `Selamat Siang, ${cleanName}` : 'Selamat Siang';
     Icon = Sun;
   } else if (timeVal >= 15 && timeVal < 18.5) {
-    greeting = 'Selamat Sore';
+    greeting = cleanName ? `Selamat Sore, ${cleanName}` : 'Selamat Sore';
     Icon = Sunset;
   } else {
-    greeting = 'Selamat Malam';
+    greeting = cleanName ? `Selamat Malam, ${cleanName}` : 'Selamat Malam';
     Icon = Moon;
   }
 
@@ -58,7 +62,7 @@ const getGreetingInfo = () => {
   };
   const formattedDate = now.toLocaleDateString('id-ID', dateOptions);
 
-  return { greeting, formattedDate, Icon };
+  return { greeting, formattedDate, Icon, titlePrefix };
 };
 
 export const Home: React.FC = () => {
@@ -74,6 +78,8 @@ export const Home: React.FC = () => {
     currentTranslation,
     setTranslation,
     navigateTo,
+    userProfile,
+    openCover,
   } = useBible();
 
   const [testamentFilter, setTestamentFilter] = useState<'ALL' | Testament>('ALL');
@@ -164,7 +170,10 @@ export const Home: React.FC = () => {
     return matchesTestament && matchesQuery;
   });
 
-  const { greeting, formattedDate, Icon: GreetingIcon } = getGreetingInfo();
+  const { greeting, formattedDate, Icon: GreetingIcon } = getGreetingInfo(
+    userProfile.name,
+    userProfile.gender
+  );
 
   return (
     <div className="flex-1 flex flex-col overflow-y-auto max-w-7xl mx-auto w-full p-4 md:p-8 space-y-8">
@@ -203,7 +212,7 @@ export const Home: React.FC = () => {
         </div>
       </header>
 
-      {/* Greeting & Date Sub-Header Banner (Option 3) */}
+      {/* Greeting & Date Sub-Header Banner */}
       <div className="bg-[var(--bg-card)] border border-[var(--border-color)] px-6 py-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
         <div className="flex items-center gap-3.5">
           <div className="w-10 h-10 rounded-xl bg-[var(--bg-card-secondary)] flex items-center justify-center text-[#CD0000] shrink-0 border border-[var(--border-color)]">
@@ -216,9 +225,23 @@ export const Home: React.FC = () => {
             <p className="text-xs text-[var(--text-secondary)] font-medium flex items-center gap-1.5 mt-0.5">
               <Calendar size={13} className="text-[#CD0000]" />
               <span>{formattedDate}</span>
+              {userProfile.gender && (
+                <span className="text-[11px] text-[var(--text-secondary)]">
+                  • {userProfile.gender === 'female' ? '👩 Saudari' : '👨 Saudara'}
+                </span>
+              )}
             </p>
           </div>
         </div>
+
+        <button
+          onClick={openCover}
+          className="self-start sm:self-center px-3 py-1.5 rounded-xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] hover:border-[#CD0000]/40 text-xs font-semibold text-[var(--text-secondary)] hover:text-[#CD0000] transition-colors flex items-center gap-1.5 cursor-pointer"
+          title="Buka kembali cover aplikasi atau ubah profil"
+        >
+          <User size={13} />
+          <span>{userProfile.name ? 'Ubah Profil' : 'Atur Nama'}</span>
+        </button>
       </div>
 
       {/* Main Grid Layout */}

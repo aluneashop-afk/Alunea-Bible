@@ -7,8 +7,11 @@ import {
   Search,
   Bookmark,
   Settings,
+  User,
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useBible } from '../contexts/BibleContext';
+import { WelcomeCoverModal } from './WelcomeCoverModal';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Beranda', icon: Home },
@@ -21,6 +24,7 @@ const NAV_ITEMS = [
 
 export const Layout: React.FC = () => {
   const location = useLocation();
+  const { userProfile, openCover } = useBible();
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors duration-200">
@@ -76,27 +80,51 @@ export const Layout: React.FC = () => {
           </nav>
         </div>
 
-        {/* Footer info card */}
-        <NavLink
-          to="/about"
-          className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[#CD0000]/50 text-xs space-y-1 text-[var(--text-secondary)] transition-all duration-200 block group"
-        >
-          <div className="flex items-center justify-between">
-            <p className="font-bold text-[var(--text-primary)] group-hover:text-[#CD0000]">
-              Alkitab Alunea
-            </p>
-            <span className="text-[10px] bg-[var(--bg-card-secondary)] px-2 py-0.5 rounded-full font-bold text-[var(--text-primary)]">
-              Tentang
-            </span>
+        <div className="space-y-2">
+          {/* User Profile Card */}
+          <div
+            onClick={openCover}
+            className="p-3 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[#CD0000]/50 transition-all cursor-pointer group flex items-center gap-3"
+            title="Klik untuk ubah nama atau buka cover"
+          >
+            <div className="w-9 h-9 rounded-xl bg-[#CD0000]/10 text-[#CD0000] flex items-center justify-center font-extrabold text-sm shrink-0">
+              {userProfile.gender === 'female' ? '👩' : userProfile.gender === 'male' ? '👨' : <User size={16} />}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-[var(--text-primary)] truncate group-hover:text-[#CD0000]">
+                {userProfile.name ? userProfile.name : 'Tamu (Klik untuk isi nama)'}
+              </p>
+              <p className="text-[10px] text-[var(--text-secondary)] truncate">
+                {userProfile.gender === 'female' ? 'Saudari' : userProfile.gender === 'male' ? 'Saudara' : 'Pengguna'} • Edit Profil
+              </p>
+            </div>
           </div>
-          <p className="text-[11px]">Informasi & Fitur • © 2026</p>
-        </NavLink>
+
+          {/* Footer info card */}
+          <NavLink
+            to="/about"
+            className="p-4 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-color)] hover:border-[#CD0000]/50 text-xs space-y-1 text-[var(--text-secondary)] transition-all duration-200 block group"
+          >
+            <div className="flex items-center justify-between">
+              <p className="font-bold text-[var(--text-primary)] group-hover:text-[#CD0000]">
+                Alkitab Alunea
+              </p>
+              <span className="text-[10px] bg-[var(--bg-card-secondary)] px-2 py-0.5 rounded-full font-bold text-[var(--text-primary)]">
+                Tentang
+              </span>
+            </div>
+            <p className="text-[11px]">Informasi & Fitur • © 2026</p>
+          </NavLink>
+        </div>
       </aside>
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0">
         <Outlet />
       </main>
+
+      {/* Welcome Cover Modal (Shows on first launch or when opened) */}
+      <WelcomeCoverModal />
 
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-sidebar)]/95 backdrop-blur-lg safe-pb px-4 py-2 border-t border-[var(--border-color)]">

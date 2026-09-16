@@ -11,10 +11,12 @@ import {
   Languages,
   Info,
   ChevronRight,
+  User,
+  Sparkles,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useBible } from '../contexts/BibleContext';
-import { FontFamily, LayoutMode } from '../types/bible';
+import { FontFamily, LayoutMode, Gender } from '../types/bible';
 import { SEOHead } from '../components/SEOHead';
 import { AboutModal } from '../components/AboutModal';
 
@@ -29,6 +31,9 @@ export const SettingsPage: React.FC = () => {
     setTranslation,
     clearHistory,
     clearAllUserData,
+    userProfile,
+    updateUserProfile,
+    openCover,
   } = useBible();
 
   const [confirmClear, setConfirmClear] = useState<string | null>(null);
@@ -54,9 +59,88 @@ export const SettingsPage: React.FC = () => {
           Pengaturan & Preferensi
         </h1>
         <p className="text-xs text-[var(--text-secondary)] font-medium">
-          Atur tampilan membaca, tema, dan kelola data lokal
+          Atur tampilan membaca, tema, nama sapaan, dan kelola data lokal
         </p>
       </div>
+
+      {/* Section 0: User Profile & Personalization */}
+      <section className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[28px] p-6 sm:p-7 space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-2">
+            <User size={18} className="text-[#CD0000]" />
+            Profil & Sapaan Pengguna
+          </h2>
+          <button
+            onClick={openCover}
+            className="text-xs font-bold text-[#CD0000] hover:underline flex items-center gap-1 cursor-pointer"
+          >
+            <Sparkles size={14} />
+            Buka Cover Aplikasi
+          </button>
+        </div>
+
+        <p className="text-xs text-[var(--text-secondary)] font-medium">
+          Nama Anda digunakan untuk sapaan hangat yang personal (Selamat Pagi, Siang, Sore, Malam) di halaman Beranda.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[var(--text-primary)]">
+              Nama Anda
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={userProfile.name}
+                onChange={(e) => updateUserProfile({ name: e.target.value })}
+                placeholder="Tuliskan nama Anda (contoh: David, Maria...)"
+                className="w-full px-4 py-2.5 pl-10 rounded-2xl bg-[var(--bg-card-secondary)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/60 focus:outline-none focus:border-[#CD0000]"
+              />
+              <User
+                size={16}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[var(--text-primary)]">
+              Panggilan / Gender
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  updateUserProfile({ gender: userProfile.gender === 'male' ? '' : 'male' })
+                }
+                className={`py-2 px-3 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  userProfile.gender === 'male'
+                    ? 'bg-[#CD0000] text-white border-[#CD0000]'
+                    : 'bg-[var(--bg-card-secondary)] border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                <span>👨 Pria</span>
+                {userProfile.gender === 'male' && <Check size={14} />}
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  updateUserProfile({ gender: userProfile.gender === 'female' ? '' : 'female' })
+                }
+                className={`py-2 px-3 rounded-2xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  userProfile.gender === 'female'
+                    ? 'bg-[#CD0000] text-white border-[#CD0000]'
+                    : 'bg-[var(--bg-card-secondary)] border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                <span>👩 Wanita</span>
+                {userProfile.gender === 'female' && <Check size={14} />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Section 1: Appearance Theme */}
       <section className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[28px] p-6 sm:p-7 space-y-5">

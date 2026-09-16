@@ -4,6 +4,7 @@ import {
   HighlightColor,
   ReadingHistoryItem,
   ReadingSettings,
+  UserProfile,
 } from '../types/bible';
 
 const STORAGE_KEYS = {
@@ -11,7 +12,14 @@ const STORAGE_KEYS = {
   HIGHLIGHTS: 'alunea_highlights',
   HISTORY: 'alunea_history',
   SETTINGS: 'alunea_settings',
+  USER_PROFILE: 'alunea_user_profile',
 } as const;
+
+export const DEFAULT_USER_PROFILE: UserProfile = {
+  name: '',
+  gender: '',
+  hasCompletedOnboarding: false,
+};
 
 export const DEFAULT_SETTINGS: ReadingSettings = {
   theme: 'system',
@@ -212,11 +220,36 @@ export class StorageService {
     return updated;
   }
 
+  // --- User Profile (Cover & Greeting) ---
+  static getUserProfile(): UserProfile {
+    try {
+      const data = localStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+      if (data) {
+        return { ...DEFAULT_USER_PROFILE, ...JSON.parse(data) };
+      }
+    } catch {
+      // Fallback
+    }
+    return DEFAULT_USER_PROFILE;
+  }
+
+  static saveUserProfile(profile: Partial<UserProfile>): UserProfile {
+    const current = this.getUserProfile();
+    const updated: UserProfile = { ...current, ...profile };
+    try {
+      localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(updated));
+    } catch (e) {
+      console.error('Failed to save user profile to storage', e);
+    }
+    return updated;
+  }
+
   static clearAllData(): void {
     try {
       localStorage.removeItem(STORAGE_KEYS.BOOKMARKS);
       localStorage.removeItem(STORAGE_KEYS.HIGHLIGHTS);
       localStorage.removeItem(STORAGE_KEYS.HISTORY);
+      localStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
     } catch (e) {
       console.error('Failed to clear user data', e);
     }

@@ -14,9 +14,10 @@ import {
   ReadingSettings,
   ThemeMode,
   Translation,
+  UserProfile,
 } from '../types/bible';
 import { bibleDataService, TRANSLATIONS } from '../services/BibleDataService';
-import { StorageService } from '../services/StorageService';
+import { StorageService, DEFAULT_USER_PROFILE } from '../services/StorageService';
 import { formatBookName } from '../utils/bibleUtils';
 
 interface BibleContextType {
@@ -53,6 +54,11 @@ interface BibleContextType {
   lastRead: ReadingHistoryItem | null;
   clearHistory: () => void;
   clearAllUserData: () => void;
+  userProfile: UserProfile;
+  updateUserProfile: (profile: Partial<UserProfile>) => void;
+  isCoverOpen: boolean;
+  setIsCoverOpen: (open: boolean) => void;
+  openCover: () => void;
 }
 
 const BibleContext = createContext<BibleContextType | undefined>(undefined);
@@ -70,8 +76,19 @@ export const BibleProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => StorageService.getBookmarks());
   const [highlights, setHighlights] = useState<Highlight[]>(() => StorageService.getHighlights());
   const [history, setHistory] = useState<ReadingHistoryItem[]>(() => StorageService.getHistory());
+  const [userProfile, setUserProfile] = useState<UserProfile>(() => StorageService.getUserProfile());
+  const [isCoverOpen, setIsCoverOpen] = useState<boolean>(() => !StorageService.getUserProfile().hasCompletedOnboarding);
 
   const lastRead = history.length > 0 ? history[0] : null;
+
+  const updateUserProfile = useCallback((profileUpdate: Partial<UserProfile>) => {
+    const updated = StorageService.saveUserProfile(profileUpdate);
+    setUserProfile(updated);
+  }, []);
+
+  const openCover = useCallback(() => {
+    setIsCoverOpen(true);
+  }, []);
 
   // Sync theme with DOM document
   const applyThemeToDOM = useCallback((themeMode: ThemeMode) => {
@@ -244,6 +261,7 @@ export const BibleProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setBookmarks([]);
     setHighlights([]);
     setHistory([]);
+    setUserProfile(DEFAULT_USER_PROFILE);
   }, []);
 
   return (
@@ -275,6 +293,11 @@ export const BibleProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         lastRead,
         clearHistory,
         clearAllUserData,
+        userProfile,
+        updateUserProfile,
+        isCoverOpen,
+        setIsCoverOpen,
+        openCover,
       }}
     >
       {children}
